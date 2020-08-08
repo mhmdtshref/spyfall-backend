@@ -4,13 +4,18 @@ import { ExpressApp } from './app';
 import Http from 'http';
 import { sequelize } from './models';
 import { Sequelize } from 'sequelize/types';
+import { resolve } from 'bluebird';
+import { SocketController } from './controllers/';
+import SocketIO from 'socket.io';
 
 export class Server {
 
   expressApp = new ExpressApp();
   httpServer: Http.Server;
+  private socketController: SocketController = new SocketController();
 
-  constructor(){
+  constructor(
+  ){
     this.httpServer = new Http.Server(this.expressApp.app);
   }
 
@@ -19,21 +24,30 @@ export class Server {
     // .then(this.serverListen)
     // .catch(this.serverErrorHandler);
     return new Promise(resolve => resolve())
+    .then(this.socketListen)
     .then(this.serverListen)
     .catch(this.serverErrorHandler);
   }
 
-  databaseConnection = (): Promise<Sequelize> => {
-    return this.sequelizeAuthenticate()
-    .then(this.sequelizeSync);
-  }
+  // databaseConnection = (): Promise<Sequelize> => {
+  //   return this.sequelizeAuthenticate()
+  //   .then(this.sequelizeSync);
+  // }
 
-  sequelizeAuthenticate = (): Promise<void> => {
-    return sequelize.authenticate();
-  }
+  // sequelizeAuthenticate = (): Promise<void> => {
+  //   return sequelize.authenticate();
+  // }
 
-  sequelizeSync = (): Promise<Sequelize> => {
-    return sequelize.sync({ force: false });
+  // sequelizeSync = (): Promise<Sequelize> => {
+  //   return sequelize.sync({ force: false });
+  // }
+
+  socketListen = (): Promise<null> => {
+    return new Promise(resolve => {
+      const socketIO = SocketIO(this.httpServer);
+      this.socketController.index(socketIO);
+      resolve();
+    });
   }
 
   serverListen = (): Http.Server => {

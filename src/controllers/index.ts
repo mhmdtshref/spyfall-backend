@@ -1,5 +1,6 @@
-import { UserController } from './user.controller';
+import { SocketController } from "./socket.controller"
 
+SocketController
 export {
-    UserController,
+    SocketController,
 }
