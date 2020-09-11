@@ -22,6 +22,6 @@ export class Game {
         this.location = Locations[Math.floor(Math.random() * Locations.length)];
         this.status = E_GAME_STATUS.waiting;
         this.adminId = adminPlayer.id;
-        this.code = generalService.generateRandomString(4);
+        this.code = generalService.generateRandomCode(4);
     }
 }

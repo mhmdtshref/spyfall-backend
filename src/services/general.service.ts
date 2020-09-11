@@ -1,6 +1,5 @@
 export class GeneralService {
-    generateRandomString = (length=6) => {
+    generateRandomCode = (length = 4): string => {
         return Math.random().toString(20).substr(2, length);
     }
-
 }

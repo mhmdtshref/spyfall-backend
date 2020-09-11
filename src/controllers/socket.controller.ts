@@ -11,11 +11,11 @@ export class SocketController {
     index = (socketServer: SocketIO.Server): void => {
         socketServer.on('connection', (socket) => {
             socket.on('createGame', (playerName: string) => {
-                const game = this.gameService.createGame(playerName);
+                // const game = this.gameService.createGame(playerName);
                 // TODO: Return game to frontend
             });
 
-            socket.on('joinGame', (data: { playerName: string, gameCode: string }) => {
+            socket.on('joinGame', (data: { playerName: string; gameCode: string }) => {
                 this.gameService.addPlayerByCode(data.playerName, data.gameCode);
                 // Send game to socket (for player game joined with status)
             })
