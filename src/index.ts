@@ -2,9 +2,9 @@ import DotenvFlow from 'dotenv-flow';
 DotenvFlow.config({ path: './environment' });
 import { ExpressApp } from './app';
 import Http from 'http';
-import { sequelize } from './models';
-import { Sequelize } from 'sequelize/types';
-import { resolve } from 'bluebird';
+// import { sequelize } from './models';
+// import { Sequelize } from 'sequelize/types';
+// import { resolve } from 'bluebird';
 import { SocketController } from './controllers/';
 import SocketIO from 'socket.io';
 
