@@ -1,5 +1,5 @@
-import * as ExampleInterfaces from './example.interface';
+import { Location } from './location.interface';
 
-export default {
-    ExampleInterfaces,
+export {
+    Location,
 }

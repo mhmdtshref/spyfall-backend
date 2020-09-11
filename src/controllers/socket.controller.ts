@@ -3,8 +3,10 @@ import Boom from '@hapi/boom';
 
 export class SocketController {
     index = (socketServer: SocketIO.Server) => {
-        socketServer.on('connection', () => {
-            // Here set the login of game, players and more...
+        socketServer.on('connection', (socket) => {
+            socketServer.on('gameCreated', () => {
+                // TODO: Create game using soclet.IO
+            })
         });
     }
 }

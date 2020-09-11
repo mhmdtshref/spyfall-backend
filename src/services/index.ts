@@ -1,5 +1,5 @@
-import { UserService } from './user.service';
+import { GameService } from './game.service';
 
 export {
-    UserService,
+    GameService,
 }

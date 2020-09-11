@@ -1,5 +1,5 @@
-import * as ExampleENums from './example.enum';
+import * as GameENums from './game.enum';
 
-export default {
-    ExampleENums,
+export {
+    GameENums,
 }

@@ -1,0 +1,1 @@
+export type T_GAME_STATUS = 'waiting' | 'started';

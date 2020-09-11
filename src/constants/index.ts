@@ -1,5 +1,5 @@
-import exampleConstants from './example.constant';
+import { Locations } from './locations.constant';
 
-export default {
-    exampleConstants,
+export {
+    Locations,
 }
