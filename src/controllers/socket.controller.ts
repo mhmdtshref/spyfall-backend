@@ -10,7 +10,7 @@ export class SocketController {
 
     index = (socketServer: SocketIO.Server): void => {
         socketServer.on('connection', (socket) => {
-            socket.on('createGame', (playerName: string) => {
+            socket.on('createGame', (/* playerName: string */) => {
                 // const game = this.gameService.createGame(playerName);
                 // TODO: Return game to frontend
             });
