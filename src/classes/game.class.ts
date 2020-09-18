@@ -10,8 +10,8 @@ const generalService = new GeneralService();
 export class Game {
     id: number;
     players: Player[];
-    private location: Location;
-    private status: T_GAME_STATUS;
+    location: Location;
+    status: T_GAME_STATUS;
     private adminId: number;
     code: string;
 

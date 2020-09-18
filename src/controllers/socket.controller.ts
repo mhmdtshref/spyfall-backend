@@ -1,6 +1,7 @@
 // import { Request, Response, NextFunction } from 'express';
 // import Boom from '@hapi/boom';
 import { GameService } from '../services';
+import { E_GAME_STATUS } from '../enums/game.enum';
 
 export class SocketController {
 
@@ -10,14 +11,47 @@ export class SocketController {
 
     index = (socketServer: SocketIO.Server): void => {
         socketServer.on('connection', (socket) => {
-            socket.on('createGame', (/* playerName: string */) => {
-                // const game = this.gameService.createGame(playerName);
-                // TODO: Return game to frontend
+
+            socket.on('createGame', (data: { playerName: string }) => {
+                const game = this.gameService.createGame(data.playerName);
+                if(game) {
+                    // TODO: Return game to frontend
+                } else {
+                    // TODO: Fail response to socket.
+                }
             });
 
             socket.on('joinGame', (data: { playerName: string; gameCode: string }) => {
-                this.gameService.addPlayerByCode(data.playerName, data.gameCode);
-                // Send game to socket (for player game joined with status)
+                const game = this.gameService.addPlayerByCode(data.playerName, data.gameCode);
+                if(game) {
+                    // TODO: Send game to socket (for player game joined with status)
+                } else {
+                    // TODO: Fail response to socket.
+                }
+                
+            });
+
+            socket.on('startGame', (data: { code: string }) => {
+                const game = this.gameService.findGameByCode(data.code);
+                if(game) {
+                    game.status = E_GAME_STATUS.started;
+                    game.players[1].isSpy = true; // TODO: find random player to be the spy
+                    // TODO: send game details to ALL PLAYERS.
+                } else {
+                    // TODO: Fail response to socket.
+                }                
+            });
+
+            socket.on('leaveGame', (data: { playerId: number; code: string }) => {
+                this.gameService.leaveGame(data.playerId, data.code);
+            });
+
+            socket.on('finishGame', (data: { gameId: number }) => {
+                this.gameService.finishGame(data.gameId);
+            });
+
+            socket.on('restartGame', (data: { gameId: number }) => {
+                this.gameService.setGameStatus(data.gameId, E_GAME_STATUS.waiting);
             })
         });
     }
