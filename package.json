@@ -9,7 +9,7 @@
     "tsc": "tsc",
     "start": "tsc && node ./dist/index.js",
     "serve:local": "SET NODE_ENV=local && ts-node-dev --respawn --transpileOnly ./src/index.ts",
-    "serve:development": "SET NODE_ENV=development && ts-node-dev --respawn --transpileOnly --env=development ./src/index.ts",
+    "serve:development": "SET NODE_ENV=development && ts-node-dev --respawn ./src/index.ts",
     "serve:production": "SET NODE_ENV=production && ts-node-dev --respawn --transpileOnly --env=production ./src/index.ts",
     "eslint": "eslint ./src/**/* ./tests/**/*",
     "eslint:fix": "eslint ./src/**/* ./tests/**/* --fix"
@@ -37,8 +37,10 @@
   "homepage": "https://github.com/mhmdtshref/spyfall-backend#readme",
   "dependencies": {
     "@hapi/boom": "^9.1.0",
+    "@types/cors": "^2.8.7",
     "@types/jest": "^25.2.2",
     "bluebird": "^3.7.2",
+    "cors": "^2.8.5",
     "dotenv-flow": "^3.1.0",
     "express": "^4.17.1",
     "pg": "^8.0.2",

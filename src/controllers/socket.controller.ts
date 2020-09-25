@@ -5,19 +5,15 @@ import { E_GAME_STATUS } from '../enums/game.enum';
 
 export class SocketController {
 
-    constructor(
-        private gameService: GameService,
-    ) {}
+    private gameService: GameService = new GameService();
 
     index = (socketServer: SocketIO.Server): void => {
         socketServer.on('connection', (socket) => {
-
             socket.on('createGame', (data: { playerName: string }) => {
                 const game = this.gameService.createGame(data.playerName);
                 if(game) {
-                    // TODO: Return game to frontend
-                } else {
-                    // TODO: Fail response to socket.
+                    const data = { game };
+                    socket.emit('gameCreated', data);
                 }
             });
 

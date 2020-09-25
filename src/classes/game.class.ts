@@ -5,8 +5,6 @@ import { Location } from '../interfaces';
 import { E_GAME_STATUS } from "../enums/game.enum";
 import { GeneralService } from "../services";
 
-const generalService = new GeneralService();
-
 export class Game {
     id: number;
     players: Player[];
@@ -14,6 +12,7 @@ export class Game {
     status: T_GAME_STATUS;
     private adminId: number;
     code: string;
+    generalService = new GeneralService();
 
     constructor(id: number, adminName: string){
         this.id = id;
@@ -22,6 +21,6 @@ export class Game {
         this.location = Locations[Math.floor(Math.random() * Locations.length)];
         this.status = E_GAME_STATUS.waiting;
         this.adminId = adminPlayer.id;
-        this.code = generalService.generateRandomCode(4);
+        this.code = this.generalService.generateRandomCode(4);
     }
 }
