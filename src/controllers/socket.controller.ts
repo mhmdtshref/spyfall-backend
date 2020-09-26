@@ -13,14 +13,20 @@ export class SocketController {
                 const game = this.gameService.createGame(data.playerName);
                 if(game) {
                     const data = { game, player: game.players[0] };
-                    socket.emit('gameCreated', data);
+                    const gameRoomName = game.getRoomName();
+                    socket.join(gameRoomName)
+                    socketServer.to(gameRoomName).emit('gameCreated', data);
                 }
             });
 
             socket.on('joinGame', (data: { playerName: string; gameCode: string }) => {
                 const game = this.gameService.addPlayerByCode(data.playerName, data.gameCode);
                 if(game) {
-                    // TODO: Send game to socket (for player game joined with status)
+                    const gameRoomName = game.getRoomName();
+                    socket.join(gameRoomName);
+                    socketServer.to(gameRoomName).emit('playerJoined', { game });
+                    const player = game.players[game.players.length-1];
+                    socket.emit('joinSuccess', { game, player });
                 } else {
                     // TODO: Fail response to socket.
                 }

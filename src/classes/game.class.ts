@@ -23,4 +23,8 @@ export class Game {
         this.adminId = adminPlayer.id;
         this.code = this.generalService.generateRandomCode(4);
     }
+
+    getRoomName = () => {
+        return 'game-' + this.id;
+    }
 }

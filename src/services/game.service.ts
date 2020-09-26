@@ -8,6 +8,7 @@ export class GameService {
     createGame = (adminName: string): Game | null => {
         const gameId = GameService.games.length + 1;
         const game = new Game(gameId, adminName);
+        GameService.games.push(game);
         if (game) {
             return game;
         } else {
@@ -28,7 +29,7 @@ export class GameService {
         
     }
 
-    findGameByCode = (code: string): Game |null => {
+    findGameByCode = (code: string): Game | null => {
         const game = GameService.games.find(g => code === g.code);
         if (game) {
             return game;
