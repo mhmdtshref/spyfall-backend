@@ -24,7 +24,7 @@ export class Game {
         this.code = this.generalService.generateRandomCode(4);
     }
 
-    getRoomName = () => {
+    getRoomName = (): string => {
         return 'game-' + this.id;
     }
 }
