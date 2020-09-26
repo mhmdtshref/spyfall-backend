@@ -12,7 +12,7 @@ export class SocketController {
             socket.on('createGame', (data: { playerName: string }) => {
                 const game = this.gameService.createGame(data.playerName);
                 if(game) {
-                    const data = { game };
+                    const data = { game, player: game.players[0] };
                     socket.emit('gameCreated', data);
                 }
             });
