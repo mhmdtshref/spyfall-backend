@@ -1,5 +1,3 @@
-// import { Request, Response, NextFunction } from 'express';
-// import Boom from '@hapi/boom';
 import { GameService } from '../services';
 import { E_GAME_STATUS } from '../enums/game.enum';
 import { Server, Socket } from 'socket.io';
@@ -37,7 +35,7 @@ export class SocketController {
         });
     }
 
-    setPlayerListeners = (socketServer: Server, socket: Socket) => {
+    setPlayerListeners = (socketServer: Server, socket: Socket): void => {
         socket.on('leaveGame', (data: { playerId: number; code: string }) => {
             const game = this.gameService.leaveGame(data.playerId, data.code);
             if (game) {
@@ -47,7 +45,7 @@ export class SocketController {
         });
     }
 
-    setAdminListeners = (socketServer: Server, socket: Socket) => {
+    setAdminListeners = (socketServer: Server, socket: Socket): void => {
         socket.on('startGame', (data: { code: string }) => {
             const game = this.gameService.findGameByCode(data.code);
             if (game) {
