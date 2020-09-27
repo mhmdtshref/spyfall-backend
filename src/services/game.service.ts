@@ -47,12 +47,12 @@ export class GameService {
         }
     }
 
-    leaveGame = (playerId: number, code: string): Player[] | null => {
+    leaveGame = (playerId: number, code: string): Game | null => {
         const game = this.findGameByCode(code);
         if(game) {
             const newPlayers = this.removePlayerById(playerId, game.players);
             game.players = newPlayers;
-            return game.players;
+            return game;
         } else {
             return null;
         }
@@ -63,15 +63,14 @@ export class GameService {
         return newPlayers;
     }
 
-    finishGame = (gameId: number): Game => {
-        GameService.games = GameService.games.filter(g => g.id !== gameId);
-        return this.findGameById(gameId) as Game;
+    endGame = (code: string): void => {
+        GameService.games = GameService.games.filter(g => g.code !== code);
     }
 
-    setGameStatus = (gameId: number, status: T_GAME_STATUS): Game | null => {
-        const game = this.findGameById(gameId);
+    setGameStatus = (code: string, status: T_GAME_STATUS): Game | null => {
+        const game = this.findGameByCode(code);
         if(game) {
-            (game).status = status;
+            game.status = status;
             return game;
         } else {
             return null;

@@ -2,12 +2,13 @@
 // import Boom from '@hapi/boom';
 import { GameService } from '../services';
 import { E_GAME_STATUS } from '../enums/game.enum';
+import { Server, Socket } from 'socket.io';
 
 export class SocketController {
 
     private gameService: GameService = new GameService();
 
-    index = (socketServer: SocketIO.Server): void => {
+    index = (socketServer: Server): void => {
         socketServer.on('connection', (socket) => {
             socket.on('createGame', (data: { playerName: string }) => {
                 const game = this.gameService.createGame(data.playerName);
@@ -16,6 +17,7 @@ export class SocketController {
                     const gameRoomName = game.getRoomName();
                     socket.join(gameRoomName)
                     socketServer.to(gameRoomName).emit('gameCreated', data);
+                    this.setAdminListeners(socketServer, socket);
                 }
             });
 
@@ -27,34 +29,52 @@ export class SocketController {
                     socketServer.to(gameRoomName).emit('playerJoined', { game });
                     const player = game.players[game.players.length-1];
                     socket.emit('joinSuccess', { game, player });
+                    this.setPlayerListeners(socketServer, socket);
                 } else {
                     // TODO: Fail response to socket.
                 }
-                
             });
+        });
+    }
 
-            socket.on('startGame', (data: { code: string }) => {
-                const game = this.gameService.findGameByCode(data.code);
-                if(game) {
-                    game.status = E_GAME_STATUS.started;
-                    game.players[1].isSpy = true; // TODO: find random player to be the spy
-                    // TODO: send game details to ALL PLAYERS.
-                } else {
-                    // TODO: Fail response to socket.
-                }                
-            });
+    setPlayerListeners = (socketServer: Server, socket: Socket) => {
+        socket.on('leaveGame', (data: { playerId: number; code: string }) => {
+            const game = this.gameService.leaveGame(data.playerId, data.code);
+            if (game) {
+                socket.emit('leftGame');
+                socketServer.to(game.getRoomName()).emit('gameUpdated', { game });
+            }
+        });
+    }
 
-            socket.on('leaveGame', (data: { playerId: number; code: string }) => {
-                this.gameService.leaveGame(data.playerId, data.code);
-            });
+    setAdminListeners = (socketServer: Server, socket: Socket) => {
+        socket.on('startGame', (data: { code: string }) => {
+            const game = this.gameService.findGameByCode(data.code);
+            if (game) {
+                game.status = E_GAME_STATUS.started;
+                const spyIndex = Math.floor(Math.random()*game.players.length);
+                game.players[spyIndex].isSpy = true;
+                socketServer.to(game.getRoomName()).emit('gameUpdated', { game });
+            }             
+        });
 
-            socket.on('finishGame', (data: { gameId: number }) => {
-                this.gameService.finishGame(data.gameId);
-            });
+        socket.on('endGame', (data: { code: string }) => {
+            const game = this.gameService.findGameByCode(data.code);
+            if (game) {
+                this.gameService.endGame(data.code);
+                socketServer.to(game.getRoomName()).emit('gameEnded');
+            }
+        });
 
-            socket.on('restartGame', (data: { gameId: number }) => {
-                this.gameService.setGameStatus(data.gameId, E_GAME_STATUS.waiting);
-            })
+        socket.on('restartGame', (data: { code: string }) => {
+            const game = this.gameService.setGameStatus(data.code, E_GAME_STATUS.waiting);
+            if (game) {
+                game.players.map(player => {
+                    player.isSpy = false;
+                    return player;
+                });
+                socketServer.to(game.getRoomName()).emit('gameUpdated', { game });
+            }
         });
     }
 }
