@@ -45,6 +45,7 @@ export class Server {
   socketListen = (): Promise<null> => {
     return new Promise(resolve => {
       const socketIO = SocketIO(this.httpServer);
+      socketIO.origins('*:*');
       this.socketController.index(socketIO);
       resolve();
     });
