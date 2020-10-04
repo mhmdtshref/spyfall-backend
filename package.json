@@ -13,7 +13,7 @@
     "serve:production": "SET NODE_ENV=production && ts-node-dev --respawn --env=production ./src/index.ts",
     "eslint": "eslint ./src/**/* ./tests/**/*",
     "eslint:fix": "eslint ./src/**/* ./tests/**/* --fix",
-    "heroku-prebuild": "npm install && npm run tsc"
+    "heroku-prebuild": "npm run tsc"
   },
   "repository": {
     "type": "git",
@@ -47,6 +47,7 @@
     "pg": "^8.0.2",
     "sequelize": "^5.21.6",
     "socket.io": "^2.3.0",
+    "tsc": "^1.20150623.0",
     "validator": "^13.0.0"
   },
   "devDependencies": {
