@@ -1,7 +1,6 @@
 import { GameService } from '../services';
 import { E_GAME_STATUS } from '../enums/game.enum';
 import { Server, Socket } from 'socket.io';
-import { Player } from '../classes';
 
 export class SocketController {
 
