@@ -5,9 +5,9 @@ import { T_GAME_STATUS } from "../types";
 export class GameService {
     static games: Game[] = [];
 
-    createGame = (adminName: string): Game | null => {
+    createGame = (adminName: string, socketId: string): Game | null => {
         const gameId = GameService.games.length + 1;
-        const game = new Game(gameId, adminName);
+        const game = new Game(gameId, adminName, socketId);
         GameService.games.push(game);
         if (game) {
             return game;
@@ -17,16 +17,15 @@ export class GameService {
         
     }
 
-    addPlayerByCode = (playerName: string, code: string): Game | null => {
+    addPlayerByCode = (playerName: string, code: string, socketId: string): Game | null => {
         const game = this.findGameByCode(code);
         if(game) {
-            const newPlayer = new Player(game.players.length + 1, playerName, game.id);
+            const newPlayer = new Player(game.players.length + 1, playerName, game.id, socketId);
             game.players.push(newPlayer);
             return game;
         } else {
             return null;
         }
-        
     }
 
     findGameByCode = (code: string): Game | null => {
@@ -72,6 +71,42 @@ export class GameService {
         if(game) {
             game.status = status;
             return game;
+        } else {
+            return null;
+        }
+    }
+
+    findGameBySocketId = (socketId: string): Game | null => {
+        return GameService.games.find((game: Game) => {
+            return game.players.find(player => player.socketId === socketId);
+        }) as Game;
+    }
+
+    deactivatePlayerBySocketId = (gameCode: string, socketId: string): Game | null => {
+        const game = this.findGameByCode(gameCode);
+        if (game) {
+            const player = game.players.find(p => p.socketId === socketId);
+            if (player) {
+                player.isActive = false;
+                return game;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    activatePlayerBySocketId = (gameCode: string, socketId: string): Game | null => {
+        const game = this.findGameByCode(gameCode);
+        if (game) {
+            const player = game.players.find(p => p.socketId === socketId);
+            if (player) {
+                player.isActive = true;
+                return game;
+            } else {
+                return null;
+            }
         } else {
             return null;
         }

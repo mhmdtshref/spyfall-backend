@@ -14,9 +14,9 @@ export class Game {
     code: string;
     generalService = new GeneralService();
 
-    constructor(id: number, adminName: string){
+    constructor(id: number, adminName: string, socketId: string){
         this.id = id;
-        const adminPlayer = new Player(1, adminName, id);
+        const adminPlayer = new Player(1, adminName, id, socketId);
         this.players = [adminPlayer];
         this.location = Locations[Math.floor(Math.random() * Locations.length)];
         this.status = E_GAME_STATUS.waiting;
