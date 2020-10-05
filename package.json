@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Backend template made using NodeJS, ExpressJS, Sequelize technologies",
   "main": "index.js",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "test": "SET NODE_ENV=test&& jest",
     "test:coverage": "SET NODE_ENV=test&& jest --coverage",
