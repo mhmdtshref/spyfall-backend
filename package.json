@@ -4,7 +4,8 @@
   "description": "Backend template made using NodeJS, ExpressJS, Sequelize technologies",
   "main": "index.js",
   "engines": {
-    "node": "12.x"
+    "node": "12.x",
+    "npm": "6.x"
   },
   "scripts": {
     "test": "SET NODE_ENV=test&& jest",
