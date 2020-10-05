@@ -17,7 +17,8 @@
     "serve:production": "SET NODE_ENV=production && ts-node-dev --respawn --env=production ./src/index.ts",
     "eslint": "eslint ./src/**/* ./tests/**/*",
     "eslint:fix": "eslint ./src/**/* ./tests/**/* --fix",
-    "heroku-prebuild": "npm install && npm run tsc"
+    "tsc-lint": "tsc --noEmit",
+    "heroku-prebuild": "npm install && npm run tsc-lint"
   },
   "repository": {
     "type": "git",
