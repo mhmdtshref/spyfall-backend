@@ -1,6 +1,7 @@
 import { GameService } from '../services';
 import { E_GAME_STATUS } from '../enums/game.enum';
 import { Server, Socket } from 'socket.io';
+import { Locations } from '../constants';
 
 export class SocketController {
 
@@ -50,6 +51,7 @@ export class SocketController {
             const game = this.gameService.findGameByCode(data.code);
             if (game) {
                 game.status = E_GAME_STATUS.started;
+                game.location = Locations[Math.floor(Math.random() * Locations.length)];
                 const spyIndex = Math.floor(Math.random()*game.players.length);
                 game.players[spyIndex].isSpy = true;
                 socketServer.to(game.getRoomName()).emit('gameUpdated', { game });
