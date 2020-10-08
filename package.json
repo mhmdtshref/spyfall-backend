@@ -11,7 +11,7 @@
     "test": "SET NODE_ENV=test&& jest",
     "test:coverage": "SET NODE_ENV=test&& jest --coverage",
     "tsc": "tsc",
-    "start": "node ./dist/src/index.js",
+    "start": "tsc && node ./dist/src/index.js",
     "serve:local": "SET NODE_ENV=local && ts-node-dev --respawn ./src/index.ts",
     "serve:development": "SET NODE_ENV=development && ts-node-dev --respawn ./src/index.ts",
     "serve:production": "SET NODE_ENV=production && ts-node-dev --respawn --env=production ./src/index.ts",
